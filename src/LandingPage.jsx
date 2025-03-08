@@ -3,9 +3,6 @@ import React, { useState, useEffect } from "react";
 const LandingPage = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [systemStats, setSystemStats] = useState({ cpu: 0, gpu: 0, ram: 0 });
-  const [selectedMode, setSelectedMode] = useState("Function");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isStatsExpanded, setIsStatsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchSystemStats = () => {
@@ -20,103 +17,17 @@ const LandingPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const modes = [
-    "Function", "Productivity", "Experts", "Music", "Literature", "Film", "Animation", "Gaming"
-  ];
-
-  const getRecommendations = () => {
-    const { cpu, gpu, ram } = systemStats;
-    let recs = [];
-
-    if (cpu > 70) recs.push("CPU usage is high, close unused apps.");
-    if (gpu > 70) recs.push("GPU usage is high, consider stopping heavy tasks.");
-    if (ram > 70) recs.push("RAM usage is high, consider clearing caches.");
-
-    if (recs.length === 0) {
-      recs.push("All systems are running smoothly.");
-    }
-    return recs;
-  };
-
   return (
-    <div className={`relative min-h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
-      <nav className="w-full p-4 fixed top-0 bg-gray-800 shadow-md flex justify-between items-center z-50">
-        <div className="relative">
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600"
-          >
-            {selectedMode} ▼
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute left-0 mt-2 w-48 bg-gray-700 shadow-lg rounded-lg z-50">
-              {modes.map((mode) => (
-                <button
-                  key={mode}
-                  onClick={() => {
-                    setSelectedMode(mode);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-600"
-                >
-                  {mode}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <h1 className="text-xl font-bold">AI Modular Interface</h1>
-        <div className="pr-4 flex gap-4">
-          <button className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500">Sign In</button>
-          <button onClick={() => setDarkMode(!darkMode)} className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600">
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
-        </div>
-      </nav>
-
-      <section className="text-center mt-20">
-        <h1 className="text-5xl font-extrabold">All-in-One AI Interface</h1>
-        <p className="text-lg text-gray-400 mt-4">Seamlessly integrate, automate, and optimize your AI models.</p>
-        <button className="mt-6 px-6 py-3 bg-blue-600 rounded-lg text-lg font-semibold hover:bg-blue-500">Get Started</button>
-      </section>
-
-      {/* FINAL FIX: TAILWIND-BASED POSITIONING OF SYSTEM STATS BOX */}
-      <div className="fixed top-4 right-4 w-64 bg-gray-800 text-white rounded-lg shadow-lg border border-gray-600 p-4 z-[50]">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-bold">System Stats</h3>
-          <button
-            onClick={() => setIsStatsExpanded(!isStatsExpanded)}
-            className="px-2 bg-gray-600 rounded hover:bg-gray-500"
-          >
-            {isStatsExpanded ? "−" : "+"}
-          </button>
-        </div>
-        {!isStatsExpanded && (
-          <div className="text-sm">
-            <p>CPU: {systemStats.cpu}%</p>
-            <p>GPU: {systemStats.gpu}%</p>
-            <p>RAM: {systemStats.ram}%</p>
-          </div>
-        )}
-        {isStatsExpanded && (
-          <div className="mt-2">
-            <p>CPU Usage: {systemStats.cpu}%</p>
-            <p>GPU Usage: {systemStats.gpu}%</p>
-            <p>RAM Usage: {systemStats.ram}%</p>
-            <div className="mt-2 p-2 bg-gray-700 rounded">
-              <h4 className="text-sm font-semibold underline">Recommendations:</h4>
-              {getRecommendations().map((r, idx) => (
-                <p key={idx} className="text-xs mt-1">- {r}</p>
-              ))}
-            </div>
-          </div>
-        )}
+    <div style={{ position: "relative", minHeight: "100vh", backgroundColor: darkMode ? "#111" : "#f4f4f4", color: darkMode ? "white" : "black" }}>
+      <h1 style={{ textAlign: "center", padding: "20px" }}>PAL-Imperator</h1>
+      <div style={{ position: "absolute", top: "10px", right: "10px", width: "180px", backgroundColor: "#222", color: "white", borderRadius: "8px", padding: "8px", border: "1px solid yellow" }}>
+        <h3 style={{ fontSize: "14px", fontWeight: "bold" }}>System Stats</h3>
+        <p>CPU: {systemStats.cpu}%</p>
+        <p>GPU: {systemStats.gpu}%</p>
+        <p>RAM: {systemStats.ram}%</p>
       </div>
-
-      <footer className="mt-16 text-gray-500 text-sm">© 2025 PAL-Imperator. All rights reserved.</footer>
     </div>
   );
 };
 
 export default LandingPage;
-
