@@ -3,8 +3,10 @@ import { ModeSelector } from './components/ModeSelector';
 import { CommandInterface } from './components/CommandInterface';
 import { DocumentDropBox } from './components/DocumentDropBox';
 
+type Mode = 'Music' | 'Literature' | 'Other';
+
 const App: React.FC = () => {
-  const [mode, setMode] = useState<string>('');
+  const [mode, setMode] = useState<Mode>('Music');
 
   return (
     <div className="App">

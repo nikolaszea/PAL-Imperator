@@ -1,12 +1,12 @@
 import React from 'react';
 
 interface ModeSelectorProps {
-  mode: string;
-  setMode: (mode: string) => void;
+  mode: 'Music' | 'Literature' | 'Other';
+  setMode: React.Dispatch<React.SetStateAction<'Music' | 'Literature' | 'Other'>>;
 }
 
 export const ModeSelector: React.FC<ModeSelectorProps> = ({ mode, setMode }) => {
-  const modes = ['Music', 'Literature', 'Other'];
+  const modes = ['Music', 'Literature', 'Other'] as const;
 
   return (
     <div>
