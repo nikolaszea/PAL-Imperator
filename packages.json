@@ -1,0 +1,29 @@
+{
+  "name": "PAL-Imperator",
+  "version": "1.0.0",
+  "description": "PAL-Imperator Project",
+  "main": "index.js",
+  "scripts": {
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "author": "Nikolas Zea",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "4.0.3",
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
+}
