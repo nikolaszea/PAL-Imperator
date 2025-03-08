@@ -1,28 +1,23 @@
 {
   "name": "pal-imperator",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI Model Interface",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nikolaszea/PAL-Imperator.git"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "keywords": [],
-  "author": "",
+  "author": "Your Name",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/nikolaszea/PAL-Imperator/issues"
-  },
-  "homepage": "https://github.com/nikolaszea/PAL-Imperator#readme",
   "dependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
     "axios": "^1.8.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.0",
     "vite": "^6.2.1"
   }
 }
