@@ -1,36 +1,18 @@
 {
-  "name": "ai_modular_interface",
+  "name": "pal-imperator",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI Modular Interface",
   "main": "index.js",
-  "dependencies": {
-    "esbuild": "^0.25.0",
-    "js-tokens": "^4.0.0",
-    "loose-envify": "^1.4.0",
-    "nanoid": "^3.3.9",
-    "picocolors": "^1.1.1",
-    "postcss": "^8.5.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "rollup": "^3.29.5",
-    "scheduler": "^0.23.2",
-    "source-map-js": "^1.2.1",
-    "vite": "^6.2.1"
-  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "start": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://nikolaszea@github.com/nikolaszea/PAL-Imperator.git"
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nikolaszea/PAL-Imperator/issues"
-  },
-  "homepage": "https://github.com/nikolaszea/PAL-Imperator#readme"
+  "devDependencies": {
+    "vite": "^4.0.0"
+  }
 }
