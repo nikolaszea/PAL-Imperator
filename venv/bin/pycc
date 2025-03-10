@@ -1,0 +1,3 @@
+#!/Users/niko/Documents/PAL-Imperator/venv/bin/python3
+from numba.pycc import main
+main()

@@ -1,10 +1,50 @@
-import React, { useState } from 'react';
-import { CSSProperties } from 'react';
+import React, { useState, useRef, CSSProperties } from 'react';
+
+const styles: { [key: string]: CSSProperties } = {
+  chatBox: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid #ccc',
+    padding: '10px',
+  },
+  toggleButton: {
+    alignSelf: 'flex-end',
+  },
+  chatLog: {
+    flexGrow: 1,
+    overflowY: 'auto',
+    padding: '10px',
+    border: '1px solid #ccc',
+  },
+  message: {
+    marginBottom: '10px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  input: {
+    marginBottom: '10px',
+  },
+  submitButton: {
+    alignSelf: 'flex-end',
+  },
+  buttonPanel: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  panelButton: {
+    flex: 1,
+    margin: '0 5px',
+  },
+};
 
 const ChatBox: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState('');
+  const chatLogRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -12,8 +52,20 @@ const ChatBox: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setMessages([...messages, input]);
-    setInput('');
+    if (input.trim()) {
+      setMessages([...messages, input]);
+      setInput('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e as unknown as React.FormEvent);
+    }
+  };
+
+  const handleClearChat = () => {
+    setMessages([]);
   };
 
   return (
@@ -22,7 +74,7 @@ const ChatBox: React.FC = () => {
         {isExpanded ? 'Collapse' : 'Expand'}
       </button>
       {isExpanded && (
-        <div style={styles.chatLog}>
+        <div style={styles.chatLog} ref={chatLogRef}>
           {messages.map((msg, index) => (
             <div key={index} style={styles.message}>
               {msg}
@@ -31,49 +83,24 @@ const ChatBox: React.FC = () => {
         </div>
       )}
       <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="text"
+        <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           style={styles.input}
+          rows={2}
         />
         <button type="submit" style={styles.submitButton}>Send</button>
       </form>
+      <div style={styles.buttonPanel}>
+        <button style={styles.panelButton}>Terminate Process</button>
+        <button style={styles.panelButton} onClick={handleClearChat}>Clear Chat</button>
+        <button style={styles.panelButton}>Extrapolate</button>
+        <button style={styles.panelButton}>Export</button>
+        <button style={styles.panelButton}>Chat History</button>
+      </div>
     </div>
   );
-};
-
-const styles: { [key: string]: CSSProperties } = {
-  chatBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '300px',
-    border: '1px solid #ccc',
-  },
-  toggleButton: {
-    alignSelf: 'flex-start',
-  },
-  chatLog: {
-    flexGrow: 1,
-    overflowY: 'auto',
-    maxHeight: 'calc(100vh - 150px)',
-    borderBottom: '1px solid #ccc',
-  },
-  message: {
-    padding: '5px',
-    borderBottom: '1px solid #eee',
-  },
-  form: {
-    display: 'flex',
-    borderTop: '1px solid #ccc',
-  },
-  input: {
-    flexGrow: 1,
-    padding: '5px',
-  },
-  submitButton: {
-    padding: '5px 10px',
-  },
 };
 
 export default ChatBox;
