@@ -1,53 +1,57 @@
-const WebSocket = require('ws');
 const express = require('express');
-const multer = require('multer');
+const fileUpload = require('express-fileupload');
+const { exec } = require('child_process');
 const path = require('path');
-const http = require('http');
+const fs = require('fs');
 
 const app = express();
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+app.use(fileUpload());
 
-// Set up middleware to handle file uploads
-const upload = multer({ dest: 'uploads/' });
-
-// Endpoint to handle file uploads
-app.post('/api/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
+app.post('/upload', (req, res) => {
+  console.log('/upload endpoint hit');
+  if (!req.files || Object.keys(req.files).length === 0) {
+    console.log('No files were uploaded.');
+    return res.status(400).send('No files were uploaded.');
   }
-  res.send({
-    message: 'File uploaded successfully',
-    file: req.file,
+
+  const audioFile = req.files.audio;
+  const uploadPath = path.join(__dirname, 'uploads', audioFile.name);
+
+  // Ensure the uploads directory exists
+  if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
+    fs.mkdirSync(path.join(__dirname, 'uploads'));
+  }
+
+  // Ensure the midi directory exists
+  if (!fs.existsSync(path.join(__dirname, 'midi'))) {
+    fs.mkdirSync(path.join(__dirname, 'midi'));
+  }
+
+  // Save the audio file
+  audioFile.mv(uploadPath, (err) => {
+    if (err) {
+      console.log('Error saving the file:', err);
+      return res.status(500).send(err);
+    }
+
+    const outputDir = path.join(__dirname, 'midi');
+    const command = `python3 midi_extractor.py ${uploadPath} ${outputDir}`;
+
+    // Execute the Python script
+    exec(command, (err, stdout, stderr) => {
+      if (err) {
+        console.log('Error executing the Python script:', err);
+        return res.status(500).send(err);
+      }
+
+      const midiFileName = audioFile.name.replace(path.extname(audioFile.name), '.mid');
+      const midiFilePath = path.join(outputDir, midiFileName);
+      console.log('MIDI file created:', midiFilePath);
+      res.download(midiFilePath);
+    });
   });
 });
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'build')));
-
-// All other requests return the React app, so it can handle routing
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/build/index.html'));
-});
-
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-
-  ws.on('message', (message) => {
-    console.log('Received:', message);
-    ws.send('Hello, client');
-  });
-
-  ws.on('close', () => {
-    console.log('Client disconnected');
-  });
-
-  ws.on('error', (error) => {
-    console.error('WebSocket error:', error);
-  });
-});
-
-const port = 3001; // Ensure this port is not used by another service
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(3000, () => {
+  console.log('Server started on http://localhost:3000');
 });
